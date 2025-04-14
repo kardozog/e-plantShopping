@@ -29,10 +29,13 @@ const CartItem = ({ onContinueShopping }) => {
   const handleDecrement = (item) => {
     dispatch(decreaseQuantity({name: item.name}));
     };
-  
+    const handleCheckoutShopping = (e) => {
+        alert('Functionality to be added for future reference');
+      };
 
   const handleRemove = (item) => {
     dispatch(removeItem(item.name));
+
   };
 
   return (
@@ -62,7 +65,7 @@ const CartItem = ({ onContinueShopping }) => {
       <div className="continue_shopping_btn">
         <button className="get-started-button" onClick={handleContinueShopping}>Continue Shopping</button>
         <br />
-        <button className="get-started-button1">Checkout</button>
+        <button className="get-started-button1" onClick={handleCheckoutShopping}> Checkout</button>
       </div>
     </div>
   );
