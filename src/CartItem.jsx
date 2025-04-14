@@ -26,13 +26,13 @@ const CartItem = ({ onContinueShopping }) => {
   if (item) {
     item.quantity++;
   }
-},
+};
 decrementQuantity: (state, action) => {
   const item = state.items.find(item => item.name === action.payload);
   if (item && item.quantity > 1) {
     item.quantity--;
   }
-},
+};
 
   const handleRemove = (item) => {
     dispatch(removeItem(item.name));
