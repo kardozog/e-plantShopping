@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeItem, updateQuantity } from './CartSlice';
+import { removeItem, decreaseQuantity,increaseQuantity  } from './CartSlice';
 import './CartItem.css';
 
 const CartItem = ({ onContinueShopping }) => {
@@ -9,10 +9,13 @@ const CartItem = ({ onContinueShopping }) => {
   const dispatch = useDispatch();
 
   const calculateTotalAmount = () => {
-    const total = cart.reduce((acc, item) => acc + item.cost * item.quantity, 0);
+    const total = cart.reduce((acc, item) => {
+      const cost = parseFloat(item.cost.substring(1)); // Convert cost from string to number
+      return acc + (cost * item.quantity);
+    }, 0);
     setTotalAmount(total);
   };
-
+  
   useEffect(() => {
     calculateTotalAmount();
   }, [cart]);
@@ -20,19 +23,13 @@ const CartItem = ({ onContinueShopping }) => {
   const handleContinueShopping = (e) => {
     onContinueShopping(e);
   };
-
- incrementQuantity: (state, action) => {
-  const item = state.items.find(item => item.name === action.payload);
-  if (item) {
-    item.quantity++;
-  }
-};
-decrementQuantity: (state, action) => {
-  const item = state.items.find(item => item.name === action.payload);
-  if (item && item.quantity > 1) {
-    item.quantity--;
-  }
-};
+  const handleIncrement = (item) => {
+  dispatch(increaseQuantity({ name: item.name }));
+  };
+  const handleDecrement = (item) => {
+    dispatch(decreaseQuantity({name: item.name}));
+    };
+  
 
   const handleRemove = (item) => {
     dispatch(removeItem(item.name));
@@ -53,7 +50,9 @@ decrementQuantity: (state, action) => {
                 <span className="cart-item-quantity-value">{item.quantity}</span>
                 <button className="cart-item-button cart-item-button-inc" onClick={() => handleIncrement(item)}>+</button>
               </div>
-              <div className="cart-item-total">Total: ${item.cost * item.quantity}</div>
+              <div className="cart-item-total">
+               Total: ${parseFloat(item.cost.substring(1)) * item.quantity.toFixed(2)}
+               </div>
               <button className="cart-item-delete" onClick={() => handleRemove(item)}>Delete</button>
             </div>
           </div>
